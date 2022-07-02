@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallistoDinner.Api", "CallistoDinner.Api\CallistoDinner.Api.csproj", "{8D5DAACD-3E26-4FE2-B4BB-7B6419A96205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallistoDinner.Contracts", "CallistoDinner.Contracts\CallistoDinner.Contracts.csproj", "{BAE98EF7-3990-459B-834A-8E71672CF4D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallistoDinner.Infrastructure", "CallistoDinner.Infrastructure\CallistoDinner.Infrastructure.csproj", "{4192AC46-E017-4E5A-A56F-6C5C758315C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallistoDinner.Application", "CallistoDinner.Application\CallistoDinner.Application.csproj", "{8624B8C0-9192-41DD-9B45-F621E850B349}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallistoDinner.Domain", "CallistoDinner.Domain\CallistoDinner.Domain.csproj", "{3545CE81-9DF1-4226-9028-78D7969CC421}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D5DAACD-3E26-4FE2-B4BB-7B6419A96205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5DAACD-3E26-4FE2-B4BB-7B6419A96205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5DAACD-3E26-4FE2-B4BB-7B6419A96205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5DAACD-3E26-4FE2-B4BB-7B6419A96205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE98EF7-3990-459B-834A-8E71672CF4D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE98EF7-3990-459B-834A-8E71672CF4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE98EF7-3990-459B-834A-8E71672CF4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE98EF7-3990-459B-834A-8E71672CF4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4192AC46-E017-4E5A-A56F-6C5C758315C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4192AC46-E017-4E5A-A56F-6C5C758315C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4192AC46-E017-4E5A-A56F-6C5C758315C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4192AC46-E017-4E5A-A56F-6C5C758315C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8624B8C0-9192-41DD-9B45-F621E850B349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8624B8C0-9192-41DD-9B45-F621E850B349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8624B8C0-9192-41DD-9B45-F621E850B349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8624B8C0-9192-41DD-9B45-F621E850B349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3545CE81-9DF1-4226-9028-78D7969CC421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3545CE81-9DF1-4226-9028-78D7969CC421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3545CE81-9DF1-4226-9028-78D7969CC421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3545CE81-9DF1-4226-9028-78D7969CC421}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26CF7DBB-7532-4B31-918F-280594F5C789}
+	EndGlobalSection
+EndGlobal
