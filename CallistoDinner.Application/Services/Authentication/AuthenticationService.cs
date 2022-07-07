@@ -1,6 +1,6 @@
 ﻿using CallistoDinner.Application.Common.Interfaces.Authentication;
 using CallistoDinner.Application.Common.Interfaces.Persistence;
-using CallistoDinner.Application.Exceptions;
+using CallistoDinner.Application.Common.Exceptions;
 using CallistoDinner.Domain.Entities;
 using System;
 using System.Collections.Generic;

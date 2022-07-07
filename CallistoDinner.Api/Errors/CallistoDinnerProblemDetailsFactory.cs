@@ -80,6 +80,7 @@ namespace CallistoDinner.Api.Errors
             var exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
             var exceptionType = exception?.GetType();
             problemDetails.Extensions.Add("ExceptionType", exceptionType?.Name ?? "Unknown");
+            problemDetails.Extensions.Add("HttpCat", "https://http.cat/" + (problemDetails?.Status ?? 500));
         }
 
     }

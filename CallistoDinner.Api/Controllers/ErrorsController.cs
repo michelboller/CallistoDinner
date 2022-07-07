@@ -1,4 +1,4 @@
-﻿using CallistoDinner.Application.Exceptions;
+﻿using CallistoDinner.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace CallistoDinner.Api.Controllers
             if (exception is SllException)
                 return Problem(detail: exception?.Message, statusCode: 400);
 
-            return Problem(detail: exception?.Message);
+            return Problem(detail: exception?.Message, statusCode: 500);
         }
     }
 }
