@@ -1,5 +1,7 @@
-﻿using CallistoDinner.Application.Services.Authentication;
+﻿using CallistoDinner.Application.Authentication.Commands.Register;
+using CallistoDinner.Application.Authentication.Queries.Login;
 using CallistoDinner.Contracts.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CallistoDinner.Api.Controllers
@@ -8,24 +10,26 @@ namespace CallistoDinner.Api.Controllers
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
-        private IAuthenticationService _authenticationService;
+        private readonly ISender _mediator;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public AuthenticationController(ISender mediator)
         {
-            _authenticationService = authenticationService;
+            _mediator = mediator;
         }
 
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var result = _authenticationService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+            var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+            var result = await _mediator.Send(command);
             return Ok(new AuthenticationResponse(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token));
         }
         
         [HttpPost("login")]
-        public IActionResult Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var result = _authenticationService.Login(request.Email, request.Password);
+            var query = new LoginQuery(request.Email, request.Password);
+            var result = await _mediator.Send(query);
             return Ok(new AuthenticationResponse(result.User.Id, result.User.FirstName, result.User.LastName, result.User.Email, result.Token));
         }
     }

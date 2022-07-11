@@ -59,10 +59,10 @@ namespace CallistoDinner.Api.Errors
         private void ApplyProblemDetailsDefaults(HttpContext httpContext, ProblemDetails problemDetails, int statusCode)
         {
             /*
-             * Poderia ser logado as infos em um arquivo e usado o traceId para obter mais informações.
-             * Pro usuário final é retornado no padrão RFC-7807 mas para o Dev é logado infos adicionais (talvez)
-             * visando dar um melhor suporte para ambos os lados caso ocorra algum problema
+             * This could log the info into a file and use the traceId to get more information.
+             * For end user it is returned in standard RFC-7807 but for the developer additional info is logged (maybe)
              */
+
             problemDetails.Status ??= statusCode;
 
             if (_options.ClientErrorMapping.TryGetValue(statusCode, out var clientErrorData))
