@@ -28,6 +28,9 @@ namespace CallistoDinner.Application.Authentication.Queries.Login
             if (_userRepository.GetUserByEmail(query.Email) is not User user)
                 throw new SllException("Invalid login.");
 
+            if (user.IsPasswordResetRequested)
+                throw new SllException("Invalid login.");
+
             if (user.Password != query.Password)
                 throw new SllException("Invalid login.");
 

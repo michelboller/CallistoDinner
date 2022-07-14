@@ -20,5 +20,10 @@ namespace CallistoDinner.Infrastructure.Persistence
         {
             return _users.FirstOrDefault(x => x.Email == email);
         }
+
+        public void RequestedPasswordReset(User user)
+        {
+            user.IsPasswordResetRequested = true;
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace CallistoDinner.Application.Common.Interfaces.Persistence
     public interface IUserRepository
     {
         User? GetUserByEmail(string email);
+        void RequestedPasswordReset(User user);
         void Add(User user);
     }
 }
