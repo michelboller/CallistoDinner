@@ -1,21 +1,13 @@
-//using CallistoDinner.Api.Filters;
-//using CallistoDinner.Api.Middleware;
-using CallistoDinner.Api.Errors;
+using CallistoDinner.Api;
 using CallistoDinner.Application;
 using CallistoDinner.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services
+        .AddPresentation()
         .AddApplication()
-        .AddInfrastructure(builder.Configuration);
-    //builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
-    builder.Services.AddControllers();
-
-    builder.Services.AddSingleton<ProblemDetailsFactory, CallistoDinnerProblemDetailsFactory>();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+        .AddInfrastructure(builder.Configuration);  
 }
 
 
@@ -27,7 +19,6 @@ var app = builder.Build();
         app.UseSwaggerUI();
     }
 
-    //app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
     app.MapControllers();
