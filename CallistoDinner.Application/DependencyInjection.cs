@@ -1,5 +1,10 @@
-﻿using MediatR;
+﻿using CallistoDinner.Application.Authentication.Commands.Register;
+using CallistoDinner.Application.Authentication.Common;
+using CallistoDinner.Application.Common.Behaviors;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CallistoDinner.Application
 {
@@ -8,6 +13,8 @@ namespace CallistoDinner.Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(typeof(DependencyInjection).Assembly);
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return services;
         }
