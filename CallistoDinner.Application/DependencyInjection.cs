@@ -1,6 +1,4 @@
-﻿using CallistoDinner.Application.Authentication.Commands.Register;
-using CallistoDinner.Application.Authentication.Common;
-using CallistoDinner.Application.Common.Behaviors;
+﻿using CallistoDinner.Application.Common.Behaviors;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
