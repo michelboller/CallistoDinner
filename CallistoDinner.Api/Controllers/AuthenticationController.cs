@@ -44,15 +44,25 @@ namespace CallistoDinner.Api.Controllers
         {
             var command = new RequestPasswordResetCommand(mail);
             var result = await _mediator.Send(command);
-            return Ok(result ? "Success" : "Something went wrong!");
+            var response = _mapper.Map<RequestPasswordResetResponse>(result);
+
+            if(response.IsSuccess)
+                return Ok(response);
+
+            return Problem(detail: response.Message, statusCode: 400);
         }
 
         [HttpPost("passwordReset")]
         public async Task<IActionResult> PasswordReset(PasswordResetRequest request)
         {
-            var command = new PasswordResetCommand(request.PasswordResetId, request.Email, request.Password);
+            var command = _mapper.Map<PasswordResetCommand>(request);
             var result = await _mediator.Send(command);
-            return Ok(result ? "Success" : "Something went wrong!");
+            var response = _mapper.Map<PasswordResetResponse>(result);
+
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return Problem(detail: response.Message, statusCode: 400);
         }
     }
 }
