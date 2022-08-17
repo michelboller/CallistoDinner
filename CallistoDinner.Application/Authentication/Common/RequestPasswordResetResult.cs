@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CallistoDinner.Application.Common;
 
 namespace CallistoDinner.Application.Authentication.Common
 {
-    public record RequestPasswordResetResult(Guid UserId, Guid PasswordResetId, bool IsSuccess)
+    public record RequestPasswordResetResult(Guid UserId, Guid PasswordResetId, bool IsSuccess) : HandlerResult
     {
         public string Message => IsSuccess ? "Success" : "Something went wrong";
     }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CallistoDinner.Application.Common;
 
 namespace CallistoDinner.Application.Authentication.Common
 {
-    public record PasswordResetResult(string Email, bool IsSuccess)
+    public record PasswordResetResult(string Email, bool IsSuccess) : HandlerResult
     {
         public string Message => IsSuccess ? "Success" : "Something went wrong";
     }

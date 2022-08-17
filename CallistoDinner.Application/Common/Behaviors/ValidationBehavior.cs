@@ -1,5 +1,4 @@
-﻿using CallistoDinner.Application.Authentication.Common;
-using CallistoDinner.Application.Common.Exceptions;
+﻿using CallistoDinner.Application.Common.Exceptions;
 using FluentValidation;
 using MediatR;
 
@@ -8,7 +7,7 @@ namespace CallistoDinner.Application.Common.Behaviors
     public class ValidationBehavior<TRequest, TResponse> :
         IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : AuthenticationResult
+        where TResponse : HandlerResult
     {
         private readonly IValidator<TRequest>? _validator;
 
