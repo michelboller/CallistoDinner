@@ -19,7 +19,9 @@ namespace CallistoDinner.Application.Authentication.Queries.Login
             _userRepository = userRepository;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<AuthenticationResult> Handle(LoginQuery query, CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             //1. Validate the user exists
             //2. Validate the password is correct

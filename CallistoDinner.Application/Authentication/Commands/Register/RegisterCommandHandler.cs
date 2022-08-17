@@ -18,7 +18,9 @@ namespace CallistoDinner.Application.Authentication.Commands.Register
             _userRepository = userRepository;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<AuthenticationResult> Handle(RegisterCommand command, CancellationToken cancellationToken)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             //1. Validate the user doesn't exist
             //2. Create user (generate unique Id) and persist to DB
