@@ -28,8 +28,6 @@ namespace CallistoDinner.Api.Controllers
             return result.Match(
                 result => Ok(_mapper.Map<AuthenticationResponse>(result)),
                 errors => Problem(errors));
-            //var response = _mapper.Map<AuthenticationResponse>(result);
-            //return Ok(response);
         }
 
         [HttpPost("login")]
@@ -40,8 +38,6 @@ namespace CallistoDinner.Api.Controllers
             return result.Match(
                 result => Ok(_mapper.Map<AuthenticationResponse>(result)),
                 errors => Problem(errors));
-            //var response = _mapper.Map<AuthenticationResponse>(result);
-            //return Ok(response);
         }
 
         [HttpGet("requestPasswordReset/{mail}")]

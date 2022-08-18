@@ -1,12 +1,14 @@
-﻿using FluentValidation;
+﻿using ErrorOr;
+using FluentValidation;
 using MediatR;
+using System.Reflection;
 
 namespace CallistoDinner.Application.Common.Behaviors
 {
     public class ValidationBehavior<TRequest, TResponse> :
         IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : HandlerResult
+        where TResponse : IErrorOr
     {
         private readonly IValidator<TRequest>? _validator;
 
@@ -27,11 +29,17 @@ namespace CallistoDinner.Application.Common.Behaviors
             if (validationResult.IsValid)
                 return await next();
 
-            var errors = validationResult.Errors;
-            //var message = string.Join("; ", errors.ConvertAll(err => $"Code: {err.PropertyName}. Description: {err.ErrorMessage}"));
-            //throw new SllException(message);
+            var errors = validationResult.Errors.ConvertAll(err => Error.Validation(err.PropertyName, err.ErrorMessage));
 
-            throw new NotImplementedException(); // Handle error later
+            //return (dynamic)errors;
+
+            return (TResponse?)typeof(TResponse)
+                .GetMethod(
+                name: nameof(ErrorOr<object>.From),
+                bindingAttr: BindingFlags.Static | BindingFlags.Public,
+                types: new[] { typeof(List<Error>) })?
+                .Invoke(null, new[] { errors })!;
+
         }
     }
 }

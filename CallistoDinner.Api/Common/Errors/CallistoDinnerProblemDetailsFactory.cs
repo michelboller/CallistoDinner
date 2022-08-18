@@ -37,19 +37,24 @@ namespace CallistoDinner.Api.Common.Errors
 
         public override ValidationProblemDetails CreateValidationProblemDetails(HttpContext httpContext, ModelStateDictionary modelStateDictionary, int? statusCode = null, string? title = null, string? type = null, string? detail = null, string? instance = null)
         {
-            statusCode ??= 500;
+            if (modelStateDictionary == null)
+            {
+                throw new ArgumentNullException(nameof(modelStateDictionary));
+            }
 
-            var problemDetails = new ValidationProblemDetails
+            statusCode ??= 400;
+
+            var problemDetails = new ValidationProblemDetails(modelStateDictionary)
             {
                 Status = statusCode,
-                Title = title,
                 Type = type,
                 Detail = detail,
-                Instance = instance
+                Instance = instance,
             };
 
             if (title != null)
             {
+                // For validation problem details, don't overwrite the default title with null.
                 problemDetails.Title = title;
             }
 

@@ -1,6 +1,7 @@
 ﻿using CallistoDinner.Api.Common.Errors.Http;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CallistoDinner.Api.Controllers
 {
@@ -9,11 +10,23 @@ namespace CallistoDinner.Api.Controllers
     {
         protected IActionResult Problem(List<Error> errors)
         {
+            if (errors.Count is 0)
+                return Problem();
+
+            if (errors.All(error => error.Type == ErrorType.Validation))
+                return ValidationProblem(errors);
+           
+
             HttpContext.Items[HttpContextItemKeys.Errors] = errors;
 
             var firstError = errors[0];
 
-            var statusCode = firstError.Type switch
+            return Problem(firstError);
+        }
+
+        private IActionResult Problem(Error error)
+        {
+            var statusCode = error.Type switch
             {
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
                 ErrorType.Validation => StatusCodes.Status400BadRequest,
@@ -21,7 +34,19 @@ namespace CallistoDinner.Api.Controllers
                 _ => StatusCodes.Status500InternalServerError
             };
 
-            return Problem(statusCode: statusCode, title: firstError.Description);
+            return Problem(statusCode: statusCode, title: error.Description);
+        }
+
+        private IActionResult ValidationProblem(List<Error> errors)
+        {
+            var modelStateDicionary = new ModelStateDictionary();
+
+            foreach (var error in errors)
+            {
+                modelStateDicionary.AddModelError(error.Code, error.Description);
+            }
+
+            return ValidationProblem(modelStateDicionary);
         }
     }
 }
