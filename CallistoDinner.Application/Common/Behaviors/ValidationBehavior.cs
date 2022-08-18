@@ -1,5 +1,4 @@
-﻿using CallistoDinner.Application.Common.Exceptions;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 
 namespace CallistoDinner.Application.Common.Behaviors
@@ -32,7 +31,7 @@ namespace CallistoDinner.Application.Common.Behaviors
             //var message = string.Join("; ", errors.ConvertAll(err => $"Code: {err.PropertyName}. Description: {err.ErrorMessage}"));
             //throw new SllException(message);
 
-            throw new SllException($"Code: {errors.FirstOrDefault()?.PropertyName}. Description: {errors.FirstOrDefault()?.ErrorMessage}");
+            throw new NotImplementedException(); // Handle error later
         }
     }
 }

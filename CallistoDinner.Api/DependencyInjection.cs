@@ -1,5 +1,5 @@
-﻿using CallistoDinner.Api.Common.Mapping;
-using CallistoDinner.Api.Errors;
+﻿using CallistoDinner.Api.Common.Errors;
+using CallistoDinner.Api.Common.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace CallistoDinner.Api

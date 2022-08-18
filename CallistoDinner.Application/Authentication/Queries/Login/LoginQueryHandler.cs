@@ -1,14 +1,14 @@
 ﻿using CallistoDinner.Application.Authentication.Common;
-using CallistoDinner.Application.Common.Exceptions;
 using CallistoDinner.Application.Common.Interfaces.Authentication;
 using CallistoDinner.Application.Common.Interfaces.Persistence;
 using CallistoDinner.Domain.Entities;
+using ErrorOr;
 using MediatR;
-
+using Errors = CallistoDinner.Domain.Common.Errors.Errors;
 
 namespace CallistoDinner.Application.Authentication.Queries.Login
 {
-    public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthenticationResult>
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
@@ -20,7 +20,7 @@ namespace CallistoDinner.Application.Authentication.Queries.Login
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<AuthenticationResult> Handle(LoginQuery query, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             //1. Validate the user exists
@@ -28,13 +28,13 @@ namespace CallistoDinner.Application.Authentication.Queries.Login
             //3. Create JWT token
 
             if (_userRepository.GetUserByEmail(query.Email) is not User user)
-                throw new SllException("Invalid login.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (user.IsPasswordResetRequested)
-                throw new SllException("Invalid login.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (user.Password != query.Password)
-                throw new SllException("Invalid login.");
+                return Errors.Authentication.InvalidCredentials;
 
             var token = _jwtTokenGenerator.GenerateToken(user);
 

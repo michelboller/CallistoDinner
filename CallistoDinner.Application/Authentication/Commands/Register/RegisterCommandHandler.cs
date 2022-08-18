@@ -1,13 +1,14 @@
 ﻿using CallistoDinner.Application.Authentication.Common;
-using CallistoDinner.Application.Common.Exceptions;
 using CallistoDinner.Application.Common.Interfaces.Authentication;
 using CallistoDinner.Application.Common.Interfaces.Persistence;
 using CallistoDinner.Domain.Entities;
+using ErrorOr;
 using MediatR;
+using Errors = CallistoDinner.Domain.Common.Errors.Errors;
 
 namespace CallistoDinner.Application.Authentication.Commands.Register
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthenticationResult>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
@@ -19,7 +20,7 @@ namespace CallistoDinner.Application.Authentication.Commands.Register
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<AuthenticationResult> Handle(RegisterCommand command, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             //1. Validate the user doesn't exist
@@ -27,7 +28,7 @@ namespace CallistoDinner.Application.Authentication.Commands.Register
             //3. Create JWT Token
 
             if (_userRepository.GetUserByEmail(command.Email) is not null)
-                throw new SllException("User with given email already exists.");
+                return Errors.User.DuplicateEmail;
 
             var user = new User { FirstName = command.FirstName, LastName = command.LastName, Email = command.Email, Password = command.Password };
 

@@ -1,15 +1,16 @@
 ﻿using CallistoDinner.Application.Authentication.Common;
-using CallistoDinner.Application.Common.Exceptions;
 using CallistoDinner.Application.Common.Interfaces.Persistence;
 using CallistoDinner.Domain.Entities;
 using MediatR;
+using ErrorOr;
 using PWReset = CallistoDinner.Domain.Entities.PasswordReset;
+using Errors = CallistoDinner.Domain.Common.Errors.Errors;
 
 namespace CallistoDinner.Application.Authentication.Commands.PasswordReset
 {
     public class PasswordResetHandler :
-        IRequestHandler<RequestPasswordResetCommand, RequestPasswordResetResult>,
-        IRequestHandler<PasswordResetCommand, PasswordResetResult>
+        IRequestHandler<RequestPasswordResetCommand, ErrorOr<RequestPasswordResetResult>>,
+        IRequestHandler<PasswordResetCommand, ErrorOr<PasswordResetResult>>
     {
 
         private readonly IUserRepository _userRepository;
@@ -22,13 +23,13 @@ namespace CallistoDinner.Application.Authentication.Commands.PasswordReset
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<RequestPasswordResetResult> Handle(RequestPasswordResetCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<RequestPasswordResetResult>> Handle(RequestPasswordResetCommand request, CancellationToken cancellationToken)
         {
             if (_userRepository.GetUserByEmail(request.Email) is not User user)
-                throw new SllException("Invalid request.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (user.IsPasswordResetRequested)
-                throw new SllException("Password reset is already required.");
+                return Errors.PasswordReset.PasswordResetAlreadyRequired;
 
             _userRepository.RequestedPasswordReset(user);
 
@@ -39,19 +40,19 @@ namespace CallistoDinner.Application.Authentication.Commands.PasswordReset
             return new RequestPasswordResetResult(user.Id, passwordReset.Id, true);
         }
 
-        public async Task<PasswordResetResult> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<PasswordResetResult>> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
         {
             if (_passwordResetRepository.GetPasswordResetById(request.PasswordResetId) is not PWReset passwordReset)
-                throw new SllException("Invalid request.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (_userRepository.GetUserByEmail(request.Email) is not User user)
-                throw new SllException("Invalid request.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (passwordReset.UserId != user.Id)
-                throw new SllException("Invalid request.");
+                return Errors.Authentication.InvalidCredentials;
 
             if (!user.IsPasswordResetRequested)
-                throw new SllException("Invalid request.");
+                return Errors.Authentication.InvalidCredentials;
 
             _passwordResetRepository.ResetPassword(passwordReset, user, request.Password);
 

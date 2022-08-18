@@ -8,9 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CallistoDinner.Api.Controllers
 {
-    [ApiController]
     [Route("auth")]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiController
     {
         private readonly ISender _mediator;
         private readonly IMapper _mapper;
@@ -26,17 +25,23 @@ namespace CallistoDinner.Api.Controllers
         {
             var command = _mapper.Map<RegisterCommand>(request);
             var result = await _mediator.Send(command);
-            var response = _mapper.Map<AuthenticationResponse>(result);
-            return Ok(response);
+            return result.Match(
+                result => Ok(_mapper.Map<AuthenticationResponse>(result)),
+                errors => Problem(errors));
+            //var response = _mapper.Map<AuthenticationResponse>(result);
+            //return Ok(response);
         }
-        
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var query = _mapper.Map<LoginQuery>(request);
             var result = await _mediator.Send(query);
-            var response = _mapper.Map<AuthenticationResponse>(result);
-            return Ok(response);
+            return result.Match(
+                result => Ok(_mapper.Map<AuthenticationResponse>(result)),
+                errors => Problem(errors));
+            //var response = _mapper.Map<AuthenticationResponse>(result);
+            //return Ok(response);
         }
 
         [HttpGet("requestPasswordReset/{mail}")]
@@ -44,12 +49,16 @@ namespace CallistoDinner.Api.Controllers
         {
             var command = new RequestPasswordResetCommand(mail);
             var result = await _mediator.Send(command);
-            var response = _mapper.Map<RequestPasswordResetResponse>(result);
+            return result.Match(
+                result => Ok(_mapper.Map<RequestPasswordResetResponse>(result)),
+                errors => Problem(errors));
+            
+            //var response = _mapper.Map<RequestPasswordResetResponse>(result);
 
-            if(response.IsSuccess)
-                return Ok(response);
+            //if(response.IsSuccess)
+            //    return Ok(response);
 
-            return Problem(detail: response.Message, statusCode: 400);
+            //return Problem(detail: response.Message, statusCode: 400);
         }
 
         [HttpPost("passwordReset")]
@@ -57,12 +66,16 @@ namespace CallistoDinner.Api.Controllers
         {
             var command = _mapper.Map<PasswordResetCommand>(request);
             var result = await _mediator.Send(command);
-            var response = _mapper.Map<PasswordResetResponse>(result);
+            return result.Match(
+                result => Ok(_mapper.Map<PasswordResetResponse>(result)),
+                errors => Problem(errors));
 
-            if (response.IsSuccess)
-                return Ok(response);
+            //var response = _mapper.Map<PasswordResetResponse>(result);
 
-            return Problem(detail: response.Message, statusCode: 400);
+            //if (response.IsSuccess)
+            //    return Ok(response);
+
+            //return Problem(detail: response.Message, statusCode: 400);
         }
     }
 }

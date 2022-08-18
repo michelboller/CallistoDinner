@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using CallistoDinner.Api.Common.Errors.Http;
+using ErrorOr;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
-namespace CallistoDinner.Api.Errors
+namespace CallistoDinner.Api.Common.Errors
 {
     public class CallistoDinnerProblemDetailsFactory : ProblemDetailsFactory
     {
@@ -46,7 +48,7 @@ namespace CallistoDinner.Api.Errors
                 Instance = instance
             };
 
-            if(title != null)
+            if (title != null)
             {
                 problemDetails.Title = title;
             }
@@ -79,7 +81,14 @@ namespace CallistoDinner.Api.Errors
 
             var exception = httpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
             var exceptionType = exception?.GetType();
-            problemDetails.Extensions.Add("ExceptionType", exceptionType?.Name ?? "Unknown");
+
+            if(exception is not null && exceptionType is not null && exceptionType.Name is not null)
+                problemDetails.Extensions.Add("ExceptionType", exceptionType?.Name ?? "Unknown");
+
+            var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
+            if (errors is not null)
+                problemDetails.Extensions.Add("errorCodes", errors.Select(x => x.Code));
+
             problemDetails.Extensions.Add("HttpCat", "https://http.cat/" + (problemDetails?.Status ?? 500));
         }
 
