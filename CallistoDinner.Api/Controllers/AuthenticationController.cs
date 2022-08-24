@@ -4,6 +4,7 @@ using CallistoDinner.Application.Authentication.Queries.Login;
 using CallistoDinner.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CallistoDinner.Api.Controllers
@@ -21,6 +22,7 @@ namespace CallistoDinner.Api.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             var command = _mapper.Map<RegisterCommand>(request);
@@ -31,6 +33,7 @@ namespace CallistoDinner.Api.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var query = _mapper.Map<LoginQuery>(request);
